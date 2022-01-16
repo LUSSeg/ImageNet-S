@@ -1,6 +1,6 @@
-ImageNetS50="https://github.com/UnsupervisedSemanticSegmentation/toolbox/releases/download/v2.0/ImageNetS50-a0fe9d82231f9bc4787ee76e304dfa51.zip"
-ImageNetS300="https://github.com/UnsupervisedSemanticSegmentation/toolbox/releases/download/v2.0/ImageNetS300-dd8e42e156bac415a35c3c239de297bf.zip"
-ImageNetS919="https://github.com/UnsupervisedSemanticSegmentation/toolbox/releases/download/v2.0/ImageNetS919-5f7f58ae1003d21da9409a8576bf7680.zip"
+ImageNetS50="https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/releases/download/ImageNet-S/ImageNetS50-a0fe9d82231f9bc4787ee76e304dfa51.zip"
+ImageNetS300="https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/releases/download/ImageNet-S/ImageNetS300-dd8e42e156bac415a35c3c239de297bf.zip"
+ImageNetS919="https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/releases/download/ImageNet-S/ImageNetS919-5f7f58ae1003d21da9409a8576bf7680.zip"
 
 cd $1
 if [ "$2" = "50" ]

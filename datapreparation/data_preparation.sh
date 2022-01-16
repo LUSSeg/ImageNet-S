@@ -11,4 +11,4 @@ python datapreparation_train.py --imagenet-dir ${SOURCE} --save-dir ${DEST} --mo
 fi
 python datapreparation_val.py --imagenet-dir ${SOURCE} --save-dir ${DEST} --mode ${MODE}
 python datapreparation_train_semi.py --imagenet-dir ${SOURCE} --save-dir ${DEST} --mode ${MODE}
-# bash datapreparation_anno.sh ${DEST} ${MODE}
+bash datapreparation_anno.sh ${DEST} ${MODE}
