@@ -6,27 +6,27 @@ cd $1
 if [ "$2" = "50" ]
 then
   wget ${ImageNetS50}
-  unzip ImageNetS50.zip
+  unzip ${ImageNetS50}
 fi
 
 if [ "$2" = "300" ]
 then
   wget ${ImageNetS300}
-  unzip ImageNetS300.zip
+  unzip ${ImageNetS300}
 fi
 
 if [ "$2" = "919" ]
 then
   wget ${ImageNetS919}
-  unzip ImageNetS919.zip
+  unzip ${ImageNetS919}
 fi
 
 if [ "$2" = "all" ]
 then
   wget ${ImageNetS50}
-  unzip ImageNetS50.zip
+  unzip ${ImageNetS50}
   wget ${ImageNetS300}
-  unzip ImageNetS300.zip
+  unzip ${ImageNetS300}
   wget ${ImageNetS919}
-  unzip ImageNetS919.zip
+  unzip ${ImageNetS919}
 fi
