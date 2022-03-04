@@ -52,7 +52,7 @@ def evaluator(loader, num_classes):
     ACC = ACC.item() * 100
 
     for i in range(4):
-        mIoUs[i] = torch.mean(TPs[i] / (Ts[i] + Ps[i] - TPs[i] + 1e-10)).item() * 100
+        mIoUs[i] = torch.mean((TPs[i] / (Ts[i] + Ps[i] - TPs[i] + 1e-10))[Ps[i] > 0]).item() * 100 # [Ps[i] > 0] skip the non-exist class.
 
     log['Acc'] = ACC
     log['mIoU'] = mIoU
