@@ -137,6 +137,8 @@ merge = {'n04356056': 'n04355933',
          'n03887697': 'n15075141'}
 ```
 
+**If you have any other question, open an issue or email us via shgao@live.com**
+
 ### Evaluation
 Before evaluation, note that given the I-th category, the value of pixels that belong to the I-th category should be set to (I % 256, I / 256, 0) with the order of RGB.
 ```shell
