@@ -72,7 +72,7 @@ bash datapreparation_anno.sh [the path to save ImageNet-S datasets] [split: 50 3
         ├── validation-segmentation # semantic segmentation mask of the validation images.
         └── test        # magenet-s-300 test set, the segmentation mask is stored on the online evalution server.                     
     └── ImageNetS50                            
-          ├── train     # imagenet-s-50 training set with 50 classes.
+        ├── train     # imagenet-s-50 training set with 50 classes.
         ├── train-semi  # imagenet-s-50 training images with pixel-level annotations (10 images for each class)
         ├── train-semi-segmentation # semantic segmentation mask of the train-semi images.
         ├── validation  # imagenet-s-50 validation set.
@@ -90,6 +90,7 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S        | 919      | 1183322 | 12419 | 27423 |
 
 #### Online benchmark
+More details about online benchmark is on the [project page](https://unsupervisedsemanticsegmentation.github.io/).
 * Fully unsupervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1317)
 * Distance matching protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1315)
 * Semi-supervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1318)
