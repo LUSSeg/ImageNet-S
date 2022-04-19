@@ -1,4 +1,4 @@
-# ImageNet-S Dataset for Large-scale Un-supervised/Semi-supervised Semantic Segmentation
+# ImageNet-S Dataset for Large-scale Unsupervised/Semi-supervised Semantic Segmentation
 
 The ImageNet-S dataset and toolbox.
 
