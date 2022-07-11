@@ -90,7 +90,7 @@ The ImageNet-S dataset contains 1183322 training, 12419 validation, and 27423 te
 | ImageNet-S        | 919      | 1183322 | 12419 | 27423 |
 
 #### Online benchmark
-More details about online benchmark is on the [project page](https://unsupervisedsemanticsegmentation.github.io/).
+More details about online benchmark is on the [project page](https://LUSSeg.github.io/).
 * Fully unsupervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1317)
 * Distance matching protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1315)
 * Semi-supervised protocol [link](https://codalab.lisn.upsaclay.fr/competitions/1318)
@@ -124,9 +124,9 @@ with open('ImageNetS_categories_im919_sort.txt', 'w') as f:
     f.write(msg)
 ```
 We provide a matching table between imagenet-s class id and imagenet tag id as follows (The i-th row is the class id of imagenet-s (start from 1)):
-[imagenet-s-919](https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im919.txt)
-[imagenet-s-300](https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im300.txt)
-[imagenet-s-50](https://github.com/UnsupervisedSemanticSegmentation/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im50.txt)
+[imagenet-s-919](https://github.com/LUSSeg/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im919.txt)
+[imagenet-s-300](https://github.com/LUSSeg/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im300.txt)
+[imagenet-s-50](https://github.com/LUSSeg/ImageNet-S/blob/main/data/categories/ImageNetS_categories_im50.txt)
 
 Note: for imagenet-s-919, we merge some categories as follows:
 ```
