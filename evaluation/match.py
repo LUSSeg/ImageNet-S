@@ -11,7 +11,7 @@ from hungarian import hungarian
 def matching(loader, num_classes):
     labels = []
     gts = []
-    for gt, predict in tqdm(loader):
+    for gt, predict, _, _ in tqdm(loader):
         gt = gt.cuda()
         predict = predict.cuda()
 

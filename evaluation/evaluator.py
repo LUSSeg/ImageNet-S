@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import argparse
 from tqdm import tqdm
-from metric import FMeasureGPU, IoUDifferentSizeGPU, IoUGPU
+from metric import FMeasureGPU, IoUDifferentSizeGPU, IoUDifferentSizeGPUWithBoundary, IoUGPU
 from tools import get_loader, get_param
 from prettytable import PrettyTable
 import os
@@ -17,6 +17,10 @@ def evaluator(loader, num_classes):
     P = torch.zeros(size=(num_classes + 1,)).cuda()
     TP = torch.zeros(size=(num_classes + 1,)).cuda()
     IoU = torch.zeros(size=(num_classes + 1,)).cuda()
+    BT = torch.zeros(size=(num_classes + 1,)).cuda()
+    BP = torch.zeros(size=(num_classes + 1,)).cuda()
+    BTP = torch.zeros(size=(num_classes + 1,)).cuda()
+    BIoU = torch.zeros(size=(num_classes + 1,)).cuda()
     FMeasure = 0.
     ACC = 0.
 
@@ -26,17 +30,29 @@ def evaluator(loader, num_classes):
     TPs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
     mIoUs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
 
-    for gt, predict in tqdm(loader):
+    BTs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
+    BPs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
+    BTPs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
+    mBIoUs = [torch.zeros(size=(num_classes + 1,)).cuda() for _ in range(4)]
+
+    for gt, predict, boundary_gt, boundary_predict in tqdm(loader):
         gt = gt.cuda()
         predict = predict.cuda()
+        boundary_gt = boundary_gt.cuda()
+        boundary_predict = boundary_predict.cuda()
 
         area_intersection, area_output, area_target = IoUGPU(predict.view(-1), gt.view(-1), num_classes + 1)
-        IoUDifferentSizeGPU(predict.view(-1), gt.view(-1), num_classes + 1, Ts, Ps, TPs)
+        area_intersection_boundary, area_output_boundary, area_target_boundary = IoUGPU(boundary_predict.view(-1), boundary_gt.view(-1), num_classes + 2)
+
+        IoUDifferentSizeGPUWithBoundary(predict.view(-1), gt.view(-1), boundary_predict.view(-1), boundary_gt.view(-1), num_classes + 1, Ts, Ps, TPs, BTs, BPs, BTPs)
         f_score = FMeasureGPU(predict, gt)
 
         T += area_output
         P += area_target
         TP += area_intersection
+        BT += area_output_boundary[1:]
+        BP += area_target_boundary[1:]
+        BTP += area_intersection_boundary[1:]
         FMeasure += f_score
 
         # image-level accuracy
@@ -44,22 +60,32 @@ def evaluator(loader, num_classes):
         ACC += (area_target[img_label] > 0) * (area_output[img_label] > 0)
 
     IoU = TP / (T + P - TP + 1e-10) * 100
+    BIoU = BTP / (BT + BP - BTP + 1e-10) * 100
     FMeasure = FMeasure / len(loader.dataset)
     ACC = ACC / len(loader.dataset)
 
     mIoU = torch.mean(IoU).item()
+    mBIoU = torch.mean(BIoU).item()
     FMeasure = FMeasure.item() * 100
     ACC = ACC.item() * 100
 
     for i in range(4):
         mIoUs[i] = torch.mean((TPs[i] / (Ts[i] + Ps[i] - TPs[i] + 1e-10))[Ps[i] > 0]).item() * 100 # [Ps[i] > 0] skip the non-exist class.
 
+    for i in range(4):
+        mBIoUs[i] = torch.mean((BTPs[i] / (BTs[i] + BPs[i] - BTPs[i] + 1e-10))[BPs[i] > 0]).item() * 100
+
     log['Acc'] = ACC
     log['mIoU'] = mIoU
+    log['mBIoU'] = mBIoU
     log['S'] = mIoUs[0]
     log['MS'] = mIoUs[1]
     log['ML'] = mIoUs[2]
     log['L'] = mIoUs[3]
+    log['BS'] = mBIoUs[0]
+    log['BMS'] = mBIoUs[1]
+    log['BML'] = mBIoUs[2]
+    log['BL'] = mBIoUs[3]
     log['IoUs'] = IoU.tolist()
     log['FMeasure'] = FMeasure
 

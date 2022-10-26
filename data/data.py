@@ -10,6 +10,7 @@ from munkres import Munkres
 import multiprocessing
 import json
 from multiprocessing import Process, Manager
+import data.utils as utils
 
 
 class EvalDataset(ImageFolder):
@@ -44,27 +45,48 @@ class EvalDataset(ImageFolder):
         gt = Image.open(self.label_lst[item])
         gt = np.array(gt)
         gt = gt[:, :, 1] * 256 + gt[:, :, 0]
-        gt = torch.from_numpy(gt.astype(np.float))
 
         predict = np.array(Image.open(os.path.join(self.pred_lst[item])))
+        predict = predict[:, :, 1] * 256 + predict[:, :, 0]
+
+        # Get boundary mask for each class.
+        boundary_gt = self.get_boundary_mask(gt + 1)
+        boundary_predict = self.get_boundary_mask(predict + 1)
+
+        gt = torch.from_numpy(gt.astype(np.float))
         predict = torch.from_numpy(predict.astype(np.float))
+        boundary_gt = torch.from_numpy(boundary_gt.astype(np.float))
+        boundary_predict = torch.from_numpy(boundary_predict.astype(np.float))
 
-        predict = predict[:, :, 1] * 256 + predict[:, :, 0]  # [R G B]
-
-        predict = predict.view(-1)
         gt = gt.view(-1)
+        predict = predict.view(-1)
+        boundary_gt = boundary_gt.view(-1)
+        boundary_predict = boundary_predict.view(-1)
+
         mask = gt != 1000
         gt = gt[mask]
         predict = predict[mask]
+        boundary_gt = boundary_gt[mask]
+        boundary_predict = boundary_predict[mask]
 
         if self.match is not None:
             predict_match = torch.zeros_like(predict)
+            boundary_predict_match = torch.zeros_like(boundary_predict)
             for v in torch.unique(predict):
                 predict_match[predict == v] = self.match[v.item()]
+                boundary_predict_match[boundary_predict == v + 1] = self.match[v.item()] + 1
 
-            return gt, predict_match
+            return gt, predict_match, boundary_gt, boundary_predict_match
 
-        return gt, predict
+        return gt, predict, boundary_gt, boundary_predict
+    
+    def get_boundary_mask(self, mask):
+        boundary = np.zeros_like(mask).astype(mask.dtype)
+        for v in np.unique(mask):
+            mask_v = utils.get_mask_of_class(mask, v)
+            boundary_v = utils.mask_to_boundary(mask_v, dilation_ratio=0.03)
+            boundary += (boundary_v > 0) * v
+        return boundary
 
     def __len__(self):
         return len(self.label_lst)

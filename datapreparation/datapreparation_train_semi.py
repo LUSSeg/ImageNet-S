@@ -20,6 +20,7 @@ def make(mode, imagenet_dir, save_dir):
         os.makedirs(os.path.join(save_dir, cate))
 
     for item in train_names:
+        item = item.split(' ')[0]
         cate, name = item.split('/')
         cate_src = name.split('_')[0]
         shutil.copy(os.path.join(imagenet_dir, 'train', cate_src, name), os.path.join(save_dir, cate, name))
