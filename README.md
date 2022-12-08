@@ -251,10 +251,10 @@ The only rule is donot use image-level or pixel-level annotations of val/test se
 
 # Citation
 ```
-@article{gao2021luss,
+@article{gao2022luss,
   title={Large-scale Unsupervised Semantic Segmentation},
   author={Gao, Shanghua and Li, Zhong-Yu and Yang, Ming-Hsuan and Cheng, Ming-Ming and Han, Junwei and Torr, Philip},
-  journal={arXiv preprint arXiv:2106.03149},
-  year={2021}
+  journal=TPAMI,
+  year={2022}
 }
 ```
